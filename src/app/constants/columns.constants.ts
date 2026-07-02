@@ -1,4 +1,4 @@
-import { Job, JobStatus, JobStatusMap } from '../models';
+import { Job, JobStatus, JobStatusMap } from '../core/models';
 
 export const COLUMNS: JobStatus[] = [
   'wishlist',
