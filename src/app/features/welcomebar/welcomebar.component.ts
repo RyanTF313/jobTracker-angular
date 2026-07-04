@@ -15,7 +15,6 @@ export class WelcomebarComponent implements OnInit {
   constructor(private auth: AuthService) {}
 
   ngOnInit(): void {
-    console.log(this.auth)
     const user = this.auth.currentUser$.value;
     this.currentUser = this.auth.isReturning
       ? `Welcome back, ${user}!`
