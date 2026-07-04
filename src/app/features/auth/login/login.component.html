@@ -1,0 +1,14 @@
+<dialog id="login-modal" open>
+  <form id="login-form" (ngSubmit)="onSubmit()">
+    <h2>Login</h2>
+    <label for="username">Username:</label>
+    <input
+      type="text"
+      id="username"
+      name="username"
+      required
+      [(ngModel)]="username"
+    />
+    <button type="submit" id="login-button" class="btn">Login</button>
+  </form>
+</dialog>

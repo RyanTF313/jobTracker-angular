@@ -1,0 +1,5 @@
+@if (isLoggedIn()) {
+  <router-outlet />
+} @else {
+  <app-login (close)="null" />
+}

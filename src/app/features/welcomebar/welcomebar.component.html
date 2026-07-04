@@ -1,0 +1,9 @@
+<section id="welcome-section">
+  <h3 id="welcome-message">{{ currentUser }}</h3>
+  <form id="logout-form" (ngSubmit)="onSubmit()">
+    <button type="submit" id="logout-button" class="btn">Logout</button>
+    <button type="button" id="clear-storage-button" class="btn danger">
+      Clear Data
+    </button>
+  </form>
+</section>

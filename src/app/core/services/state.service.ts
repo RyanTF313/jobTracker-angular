@@ -1,23 +1,26 @@
-import { Injectable, OnInit } from '@angular/core';
-import { AppState, AuthState, Job, JobStatus } from '../models';
+import { inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { AppState, Job, JobStatus } from '../models';
 import { BehaviorSubject } from 'rxjs';
+import { AuthService } from './auth.service';
+
+const STATE_KEY = 'jobTrackerState';
 
 @Injectable({
   providedIn: 'root',
 })
-export class StateService implements OnInit {
+export class StateService {
+  private isBrowser: boolean;
+  private auth = inject(AuthService);
+
   jobs$: BehaviorSubject<Job[]> = new BehaviorSubject([] as Job[]);
   filteredJobs$: BehaviorSubject<Job[]> = new BehaviorSubject([] as Job[]);
   useFilteredJobs$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   displayedJobs$: BehaviorSubject<Job[]> = new BehaviorSubject([] as Job[]);
-  auth$: BehaviorSubject<AuthState> = new BehaviorSubject({
-    isLoggedIn: false,
-    user: null,
-    isReturning: false,
-  } as AuthState);
   hasSearchFilter$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
-  ngOnInit(): void {
+  constructor() {
+    this.isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
     this.loadState();
   }
 
@@ -34,7 +37,7 @@ export class StateService implements OnInit {
       status,
       notes,
       salary,
-      owner: this.auth$.value.user,
+      owner: this.auth.currentUser$.value,
       id: crypto.randomUUID(),
     };
     this.jobs$.next([...this.jobs$.value, newJob]);
@@ -66,12 +69,14 @@ export class StateService implements OnInit {
   }
 
   saveState(): void {
-    localStorage.setItem('jobTrackerState', JSON.stringify(this));
+    if (!this.isBrowser) return;
+    localStorage.setItem(STATE_KEY, JSON.stringify(this));
   }
 
   loadState(): void {
-    const savedState: AppState = localStorage.getItem('jobTrackerState')
-      ? JSON.parse(localStorage.getItem('jobTrackerState') as string)
+    if (!this.isBrowser) return;
+    const savedState: AppState = localStorage.getItem(STATE_KEY)
+      ? JSON.parse(localStorage.getItem(STATE_KEY) as string)
       : null;
 
     if (savedState) {
@@ -83,6 +88,6 @@ export class StateService implements OnInit {
   }
 
   getJobs(): Job[] {
-    return this.jobs$.value.filter((job: Job) => job.owner === this.auth$.value.user);
+    return this.jobs$.value.filter((job: Job) => job.owner === this.auth.currentUser$.value);
   }
 }
