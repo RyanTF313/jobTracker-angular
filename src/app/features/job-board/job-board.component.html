@@ -33,13 +33,7 @@
   </section>
 }
 
-<app-job-form
-  [isOpen]="isJobFormOpen"
-  [column]="currentColumn"
-  [job]="null"
-  [isEditMode]="false"
-  (closeForm)="handleJobFormClose()"
-></app-job-form>
+<app-job-form [job]="null" [isEditMode]="false"></app-job-form>
 
 <app-job-detail></app-job-detail>
 

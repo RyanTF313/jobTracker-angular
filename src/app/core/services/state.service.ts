@@ -25,25 +25,11 @@ export class StateService {
   }
 
   addJob(
-    position: string,
-    company: string,
-    status: JobStatus,
-    notes: string,
-    salary: string,
-  ): Job {
-    const newJob: Job = {
-      position,
-      company,
-      status,
-      notes,
-      salary,
-      owner: this.auth.currentUser$.value,
-      id: crypto.randomUUID(),
-    };
+    newJob: Job,
+  ): void {
     this.jobs$.next([...this.jobs$.value, newJob]);
     this.saveState();
     this.setFilteredJobs();
-    return newJob;
   }
 
   removeJob(jobId: string): void {
@@ -88,8 +74,10 @@ export class StateService {
       : null;
 
     if (savedState) {
-      this.jobs$.next(savedState.jobs);
-      this.filteredJobs$.next(savedState.filteredJobs);
+      this.jobs$.next(Array.isArray(savedState.jobs) ? savedState.jobs : []);
+      this.filteredJobs$.next(
+        Array.isArray(savedState.filteredJobs) ? savedState.filteredJobs : [],
+      );
     } else {
       this.saveState();
     }

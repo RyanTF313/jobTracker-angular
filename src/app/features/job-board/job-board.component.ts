@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { ColumnHeadComponent } from './column-head/column-head.component';
 import { JobFormComponent, JobDetailComponent, JobListComponent, JobCardComponent } from '@features/jobs';
@@ -25,18 +25,13 @@ export class JobBoardComponent {
   protected state = inject(StateService);
   protected auth = inject(AuthService);
 
+  @ViewChild(JobFormComponent) private jobForm!: JobFormComponent;
+
   columns = COLUMNS;
-  isJobFormOpen = false;
-  currentColumn: JobStatus | null = null;
   selectedJob: Job | null = null;
 
   handleAddJob(column: string) {
-    this.currentColumn = column as JobStatus;
-    this.isJobFormOpen = true;
-  }
-
-  handleJobFormClose() {
-    this.isJobFormOpen = false;
+    this.jobForm.open(column as JobStatus);
   }
 
   handleCardClick(job: Job): void {
