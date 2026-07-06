@@ -42,4 +42,19 @@ export class JobBoardComponent {
   countInColumn(jobs: Job[], column: JobStatus): number {
     return jobs.filter((job) => job.status === column).length;
   }
+
+  handleDragStart(event: DragEvent, jobId: string): void {
+    event.dataTransfer?.setData('text/plain', jobId);
+  }
+
+  handleDragOver(event: DragEvent): void {
+    event.preventDefault();
+  }
+
+  handleDrop(event: DragEvent, targetColumn: JobStatus): void {
+    event.preventDefault();
+    const jobId = event.dataTransfer?.getData('text/plain');
+    if (!jobId) return;
+    this.state.updateJob(jobId, { status: targetColumn });
+  }
 }
