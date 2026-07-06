@@ -36,6 +36,7 @@ export class JobBoardComponent {
 
   handleCardClick(job: Job): void {
     this.selectedJob = job;
+    this.jobForm.openEdit(job)
   }
 
   countInColumn(jobs: Job[], column: JobStatus): number {

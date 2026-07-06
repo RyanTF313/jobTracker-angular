@@ -14,12 +14,13 @@ import { FormsModule } from '@angular/forms';
 import { Job, JobStatus } from '@core/models';
 import { AuthService } from '@core/services';
 import { Subscription } from 'rxjs';
-import { AddJobModalComponentComponent } from './add-job-modal-component/add-job-modal-component.component';
+import { AddJobModalComponent } from './add-job-modal/add-job-modal.component';
+import { EditJobModalComponent } from './edit-job-modal/edit-job-modal.component';
 
 @Component({
   selector: 'app-job-form',
   standalone: true,
-  imports: [FormsModule, AddJobModalComponentComponent],
+  imports: [FormsModule, AddJobModalComponent, EditJobModalComponent],
   templateUrl: './job-form.component.html',
   styleUrl: './job-form.component.css',
 })
@@ -34,7 +35,8 @@ export class JobFormComponent implements OnChanges, OnInit, OnDestroy {
   @Output() closeForm = new EventEmitter<void>();
 
   @ViewChild('jobFormDialog') dialogRef!: ElementRef<HTMLDialogElement>;
-  @ViewChild(AddJobModalComponentComponent) private addJobModal?: AddJobModalComponentComponent;
+  @ViewChild(AddJobModalComponent) private addJobModal?: AddJobModalComponent;
+  @ViewChild(EditJobModalComponent) private editJobModal?: EditJobModalComponent;
 
   user: string | null = null;
 
@@ -64,6 +66,8 @@ export class JobFormComponent implements OnChanges, OnInit, OnDestroy {
   open(column: JobStatus): void {
     this.addJobModal?.open(column);
   }
+
+  openEdit(job: Job): void { this.editJobModal?.open(job); } 
 
   handleCancelClick(): void {
     this.closeForm.emit();

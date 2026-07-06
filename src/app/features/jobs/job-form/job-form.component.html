@@ -1,35 +1,7 @@
-@if (isEditMode) {
-  <dialog id="job-details-modal" #jobFormDialog>
-    <form id="job-edit-form">
-      <label for="edit-role">Role:</label>
-      <input type="text" id="edit-role" name="role" required />
-      <label for="edit-company">Company:</label>
-      <input type="text" id="edit-company" name="company" required />
-      <label for="edit-status">Status:</label>
-      <input type="text" id="edit-status" name="status" required />
-      <label for="edit-salary">Salary:</label>
-      <input type="text" id="edit-salary" name="salary" required />
-      <label for="edit-notes">Notes:</label>
-      <textarea name="notes" id="edit-notes"></textarea>
-      <button type="button" id="job-remove-button" class="btn danger">
-        Remove Job
-      </button>
-      <button
-        type="button"
-        id="job-cancel-button"
-        class="btn cancel"
-        (click)="handleCancelClick()"
-      >
-        Cancel
-      </button>
-      <!-- Cancel button uses type button instead of submit so we don't trigger builtin dom validation. -->
-      <button type="submit" id="job-save-button" class="btn">Save</button>
-    </form>
-  </dialog>
-}
-@if (!isEditMode) {
-  <app-add-job-modal-component
-    [currentUser]="user"
-    (closeForm)="handleCancelClick()"
-  ></app-add-job-modal-component>
-}
+<app-edit-job-modal
+  (closeForm)="handleCancelClick()"
+></app-edit-job-modal>
+<app-add-job-modal
+  [currentUser]="user"
+  (closeForm)="handleCancelClick()"
+></app-add-job-modal>
