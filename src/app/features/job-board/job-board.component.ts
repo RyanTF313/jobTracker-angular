@@ -1,7 +1,7 @@
 import { Component, inject, ViewChild } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { ColumnHeadComponent } from './column-head/column-head.component';
-import { JobFormComponent, JobDetailComponent, JobListComponent, JobCardComponent } from '@features/jobs';
+import { JobFormComponent, JobCardComponent } from '@features/jobs';
 import { Job, JobStatus } from '@core/models';
 import { StateService } from '@core/services/state.service';
 import { AuthService } from '@core/services/auth.service';
@@ -14,9 +14,7 @@ import { COLUMNS } from '@constants/columns.constants';
     AsyncPipe,
     ColumnHeadComponent,
     JobCardComponent,
-    JobFormComponent,
-    JobDetailComponent,
-    JobListComponent,
+    JobFormComponent
   ],
   templateUrl: './job-board.component.html',
   styleUrl: './job-board.component.css',
