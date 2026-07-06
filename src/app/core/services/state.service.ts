@@ -42,12 +42,14 @@ export class StateService {
     };
     this.jobs$.next([...this.jobs$.value, newJob]);
     this.saveState();
+    this.setFilteredJobs();
     return newJob;
   }
 
   removeJob(jobId: string): void {
     this.jobs$.next(this.jobs$.value.filter((job: Job) => job.id !== jobId));
     this.saveState();
+    this.setFilteredJobs();
   }
 
   updateJob(jobId: string, updates: Partial<Job>): void {
@@ -56,21 +58,27 @@ export class StateService {
       const job = this.jobs$.value[jobIndex];
       this.jobs$.value[jobIndex] = Object.assign(job, updates);
       this.saveState();
+      this.setFilteredJobs();
     }
   }
 
   setFilteredJobs(): void {
-    this.useFilteredJobs$.next(
-      this.jobs$.value.length > 0 || this.hasSearchFilter$.value,
-    );
+    this.useFilteredJobs$.next(this.hasSearchFilter$.value);
     this.filteredJobs$.next(
       this.useFilteredJobs$.value ? this.jobs$.value : this.getJobs(),
     );
+    this.displayedJobs$.next(this.filteredJobs$.value);
   }
 
   saveState(): void {
     if (!this.isBrowser) return;
-    localStorage.setItem(STATE_KEY, JSON.stringify(this));
+    localStorage.setItem(
+      STATE_KEY,
+      JSON.stringify({
+        jobs: this.jobs$.value,
+        filteredJobs: this.filteredJobs$.value,
+      }),
+    );
   }
 
   loadState(): void {
@@ -85,9 +93,10 @@ export class StateService {
     } else {
       this.saveState();
     }
+    this.setFilteredJobs();
   }
 
   getJobs(): Job[] {
-    return this.jobs$.value.filter((job: Job) => job.owner === this.auth.currentUser$.value);
+    return this.jobs$.value?.filter((job: Job) => job.owner === this.auth.currentUser$.value);
   }
 }

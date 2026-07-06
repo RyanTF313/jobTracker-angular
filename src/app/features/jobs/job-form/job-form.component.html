@@ -1,0 +1,55 @@
+@if (isEditMode) {
+  <dialog id="job-details-modal" #jobFormDialog>
+    <form id="job-edit-form">
+      <label for="edit-role">Role:</label>
+      <input type="text" id="edit-role" name="role" required />
+      <label for="edit-company">Company:</label>
+      <input type="text" id="edit-company" name="company" required />
+      <label for="edit-status">Status:</label>
+      <input type="text" id="edit-status" name="status" required />
+      <label for="edit-salary">Salary:</label>
+      <input type="text" id="edit-salary" name="salary" required />
+      <label for="edit-notes">Notes:</label>
+      <textarea name="notes" id="edit-notes"></textarea>
+      <button type="button" id="job-remove-button" class="btn danger">
+        Remove Job
+      </button>
+      <button
+        type="button"
+        id="job-cancel-button"
+        class="btn cancel"
+        (click)="handleCancelClick()"
+      >
+        Cancel
+      </button>
+      <!-- Cancel button uses type button instead of submit so we don't trigger builtin dom validation. -->
+      <button type="submit" id="job-save-button" class="btn">Save</button>
+    </form>
+  </dialog>
+}
+@if (!isEditMode) {
+  <dialog id="create-job-modal" #jobFormDialog>
+    <form id="create-job-form" (ngSubmit)="createJob($event)">
+      <h2>Create Job</h2>
+      <label for="position">Position:</label>
+      <input type="text" id="position" name="position" required />
+      <label for="company">Company:</label>
+      <input type="text" id="company" name="company" required />
+      <label for="notes">Notes:</label>
+      <textarea id="notes" name="notes"></textarea>
+      <label for="salary">Salary:</label>
+      <input type="number" id="salary" name="salary" step="1000" />
+      <button
+        type="button"
+        id="job-cancel-button"
+        class="btn cancel"
+        (click)="handleCancelClick()"
+      >
+        Cancel
+      </button>
+      <button type="submit" id="create-job-button" class="btn">
+        Create Job
+      </button>
+    </form>
+  </dialog>
+}

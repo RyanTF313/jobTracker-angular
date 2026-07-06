@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { WelcomebarComponent } from '@features/welcomebar/welcomebar.component';
+import { WelcomebarComponent, JobBoardComponent } from '@features/index';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [FormsModule, WelcomebarComponent],
+  imports: [FormsModule, WelcomebarComponent, JobBoardComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })

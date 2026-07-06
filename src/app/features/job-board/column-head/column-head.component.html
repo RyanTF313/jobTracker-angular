@@ -1,0 +1,17 @@
+<thead>
+  <tr>
+    @for (column of columns; track column) {
+      <th>
+        <p>{{ labels[column] }}</p>
+
+        <button
+          class="btn table-column"
+          [attr.data-column]="column"
+          (click)="handleAddJobClick(column)"
+        >
+          +
+        </button>
+      </th>
+    }
+  </tr>
+</thead>
