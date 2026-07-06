@@ -48,10 +48,11 @@ export class StateService {
     }
   }
 
-  setFilteredJobs(): void {
-    this.useFilteredJobs$.next(this.hasSearchFilter$.value);
+  setFilteredJobs(jobs: Job[] = [], hasSearchFilter: boolean = false): void {
+    this.hasSearchFilter$.next(hasSearchFilter);
+    this.useFilteredJobs$.next(jobs.length > 0 || hasSearchFilter);
     this.filteredJobs$.next(
-      this.useFilteredJobs$.value ? this.jobs$.value : this.getJobs(),
+      this.useFilteredJobs$.value ? jobs : this.getJobs(),
     );
     this.displayedJobs$.next(this.filteredJobs$.value);
   }

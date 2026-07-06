@@ -1,0 +1,13 @@
+@if (auth.isLoggedIn$ | async) {
+  <section id="job-search-form-section">
+    <form id="job-search-form" (ngSubmit)="$event.preventDefault()">
+      <label for="job-search">Search</label>
+      <input
+        id="job-search"
+        name="jobSearch"
+        type="search"
+        [formControl]="searchControl"
+      />
+    </form>
+  </section>
+}
