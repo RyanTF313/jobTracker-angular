@@ -1,0 +1,46 @@
+@if (auth.isLoggedIn$ | async) {
+  <section id="job-board">
+    <table>
+      <app-column-head (addJob)="handleAddJob($event)"></app-column-head>
+      <tbody id="job-board-body">
+        @if (state.displayedJobs$ | async; as jobs) {
+          <tr>
+            @for (column of columns; track column) {
+              <td>
+                @if (countInColumn(jobs, column) === 0) {
+                  <p class="empty-state">No jobs in this column yet!</p>
+                }
+              </td>
+            }
+          </tr>
+          @for (job of jobs; track job.id) {
+            <tr>
+              @for (column of columns; track column) {
+                <td [class.card]="job.status === column">
+                  @if (job.status === column) {
+                    <app-job-card
+                      [job]="job"
+                      (cardClicked)="handleCardClick($event)"
+                    ></app-job-card>
+                  }
+                </td>
+              }
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </section>
+}
+
+<app-job-form
+  [isOpen]="isJobFormOpen"
+  [column]="currentColumn"
+  [job]="null"
+  [isEditMode]="false"
+  (closeForm)="handleJobFormClose()"
+></app-job-form>
+
+<app-job-detail></app-job-detail>
+
+<!-- <app-job-list [jobs]="jobs"></app-job-list> -->

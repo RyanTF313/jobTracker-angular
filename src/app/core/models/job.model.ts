@@ -15,10 +15,4 @@ export type JobStatus =
   | "offer"
   | "rejected";
 
-  export type JobStatusMap = {
-    wishlist: number;
-    applied: number;
-    interviewing: number;
-    rejected: number;
-    offer: number;
-  };
+export type JobStatusMap = Record<JobStatus, number>;
