@@ -6,7 +6,11 @@
         @if (state.displayedJobs$ | async; as jobs) {
           <tr>
             @for (column of columns; track column) {
-              <td>
+              <td
+                [attr.data-column]="column"
+                (dragover)="handleDragOver($event)"
+                (drop)="handleDrop($event, column)"
+              >
                 @if (countInColumn(jobs, column) === 0) {
                   <p class="empty-state">No jobs in this column yet!</p>
                 }
@@ -16,14 +20,25 @@
           @for (job of jobs; track job.id) {
             <tr>
               @for (column of columns; track column) {
-                <td [class.card]="job.status === column">
-                  @if (job.status === column) {
+                @if (job.status === column) {
+                  <td
+                    class="card"
+                    [attr.data-column]="column"
+                    [draggable]="true"
+                    (dragstart)="handleDragStart($event, job.id)"
+                  >
                     <app-job-card
                       [job]="job"
                       (cardClicked)="handleCardClick($event)"
                     ></app-job-card>
-                  }
-                </td>
+                  </td>
+                } @else {
+                  <td
+                    [attr.data-column]="column"
+                    (dragover)="handleDragOver($event)"
+                    (drop)="handleDrop($event, column)"
+                  ></td>
+                }
               }
             </tr>
           }
