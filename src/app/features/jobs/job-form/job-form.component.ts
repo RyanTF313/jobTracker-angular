@@ -11,14 +11,15 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Job } from '@core/models';
-import { AuthService } from '@core/services/auth.service';
+import { Job, JobStatus } from '@core/models';
+import { AuthService } from '@core/services';
 import { Subscription } from 'rxjs';
+import { AddJobModalComponentComponent } from './add-job-modal-component/add-job-modal-component.component';
 
 @Component({
   selector: 'app-job-form',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, AddJobModalComponentComponent],
   templateUrl: './job-form.component.html',
   styleUrl: './job-form.component.css',
 })
@@ -30,10 +31,10 @@ export class JobFormComponent implements OnChanges, OnInit, OnDestroy {
   @Input() column: string | null = null;
   @Input() job: Job | null = null;
   @Input() isEditMode = false;
-  @Input() currentUser: string | null = null;
   @Output() closeForm = new EventEmitter<void>();
 
   @ViewChild('jobFormDialog') dialogRef!: ElementRef<HTMLDialogElement>;
+  @ViewChild(AddJobModalComponentComponent) private addJobModal?: AddJobModalComponentComponent;
 
   user: string | null = null;
 
@@ -60,26 +61,11 @@ export class JobFormComponent implements OnChanges, OnInit, OnDestroy {
     this.userSubscription.unsubscribe();
   }
 
+  open(column: JobStatus): void {
+    this.addJobModal?.open(column);
+  }
+
   handleCancelClick(): void {
     this.closeForm.emit();
-  }
-
-  createJob(event: Event): void {
-    event.preventDefault();
-    const newJob: Job = {
-      id: this.generateUniqueId(),
-      position: (document.getElementById('position') as HTMLInputElement).value,
-      company: (document.getElementById('company') as HTMLInputElement).value,
-      status: this.column as Job['status'],
-      notes: (document.getElementById('notes') as HTMLInputElement).value,
-      salary: (document.getElementById('salary') as HTMLInputElement).value,
-      owner: this.currentUser,
-    };
-
-    console.log('New Job:', newJob);
-  }
-
-  generateUniqueId(): string {
-    return crypto.randomUUID();
   }
 }

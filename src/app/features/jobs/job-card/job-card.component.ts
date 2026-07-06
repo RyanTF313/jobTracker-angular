@@ -13,6 +13,7 @@ export class JobCardComponent {
   @Output() cardClicked = new EventEmitter<Job>();
 
   handleClick(): void {
+    console.log(this.job)
     this.cardClicked.emit(this.job);
   }
 }
