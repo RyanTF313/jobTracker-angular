@@ -1,0 +1,63 @@
+<dialog id="edit-job-modal" #jobFormDialog (close)="handleDialogClose()">
+  <form id="edit-job-form" #jobForm="ngForm" (ngSubmit)="save(jobForm)">
+    <h2>Edit Job</h2>
+    <label for="edit-position">Role:</label>
+    <input
+      type="text"
+      id="edit-position"
+      name="position"
+      [(ngModel)]="currentJob.position"
+      required
+    />
+    <label for="edit-company">Company:</label>
+    <input
+      type="text"
+      id="edit-company"
+      name="company"
+      [(ngModel)]="currentJob.company"
+      required
+    />
+    <label for="edit-status">Status:</label>
+    <select
+      id="edit-status"
+      name="status"
+      [(ngModel)]="currentJob.status"
+      required
+    >
+      @for (column of columns; track column) {
+        <option [value]="column">{{ columnLabels[column] }}</option>
+      }
+    </select>
+    <label for="edit-salary">Salary:</label>
+    <input
+      type="number"
+      id="edit-salary"
+      name="salary"
+      step="1000"
+      [(ngModel)]="currentJob.salary"
+    />
+    <label for="edit-notes">Notes:</label>
+    <textarea
+      id="edit-notes"
+      name="notes"
+      [(ngModel)]="currentJob.notes"
+    ></textarea>
+    <button
+      type="button"
+      id="job-remove-button"
+      class="btn danger"
+      (click)="remove()"
+    >
+      Remove Job
+    </button>
+    <button
+      type="button"
+      id="job-cancel-button"
+      class="btn cancel"
+      (click)="close()"
+    >
+      Cancel
+    </button>
+    <button type="submit" id="job-save-button" class="btn">Save</button>
+  </form>
+</dialog>

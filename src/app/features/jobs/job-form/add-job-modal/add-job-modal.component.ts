@@ -13,13 +13,13 @@ import { Job, JobStatus } from '@core/models';
 import { StateService } from '@core/services/state.service';
 
 @Component({
-  selector: 'app-add-job-modal-component',
+  selector: 'app-add-job-modal',
   standalone: true,
   imports: [FormsModule],
-  templateUrl: './add-job-modal-component.component.html',
-  styleUrl: './add-job-modal-component.component.css',
+  templateUrl: './add-job-modal.component.html',
+  styleUrl: './add-job-modal.component.css',
 })
-export class AddJobModalComponentComponent implements OnInit {
+export class AddJobModalComponent implements OnInit {
   stateService = inject(StateService);
 
   @Input() targetColumn: JobStatus | null = null;
