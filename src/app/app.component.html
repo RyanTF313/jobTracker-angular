@@ -1,5 +1,15 @@
-@if (isLoggedIn()) {
-  <router-outlet />
+@if (auth.isLoggedIn$ | async) {
+  <app-welcomebar />
+  <app-view-nav (viewChanged)="activeView = $event" />
+  @switch (activeView) {
+    @case ('board') {
+      <app-search-bar />
+      <app-job-board />
+    }
+    @case ('analytics') {
+      <app-analytics />
+    }
+  }
 } @else {
   <app-login (close)="null" />
 }

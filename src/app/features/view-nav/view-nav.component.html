@@ -1,0 +1,18 @@
+<nav id="view-nav">
+  <button
+    type="button"
+    class="btn view-tab"
+    [class.active]="activeView === 'board'"
+    (click)="selectView('board')"
+  >
+    Board View
+  </button>
+  <button
+    type="button"
+    class="btn view-tab"
+    [class.active]="activeView === 'analytics'"
+    (click)="selectView('analytics')"
+  >
+    Analytics View
+  </button>
+</nav>

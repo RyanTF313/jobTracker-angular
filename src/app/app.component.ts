@@ -1,20 +1,41 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { AsyncPipe } from '@angular/common';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '@core/services/auth.service';
 import { LoginComponent } from './features/auth/login/login.component';
+import {
+  WelcomebarComponent,
+  ViewNavComponent,
+  JobBoardComponent,
+  SearchBarComponent,
+  AnalyticsComponent,
+} from '@features/index';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, LoginComponent],
+  imports: [
+    AsyncPipe,
+    LoginComponent,
+    WelcomebarComponent,
+    ViewNavComponent,
+    JobBoardComponent,
+    SearchBarComponent,
+    AnalyticsComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit {
-  private auth = inject(AuthService);
+  protected auth = inject(AuthService);
 
-  isLoggedIn = toSignal(this.auth.isLoggedIn$, { initialValue: false });
+  activeView: 'board' | 'analytics' = 'board';
+
+  constructor() {
+    this.auth.isLoggedIn$.pipe(takeUntilDestroyed()).subscribe((loggedIn) => {
+      if (loggedIn) this.activeView = 'board';
+    });
+  }
 
   ngOnInit(): void {
     this.auth.checkSession();
