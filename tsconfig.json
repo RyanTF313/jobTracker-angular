@@ -21,7 +21,8 @@
       "@core/*": ["app/core/*"],
       "@shared/*": ["app/shared/*"],
       "@features/*": ["app/features/*"],
-      "@constants/*": ["app/constants/*"]
+      "@constants/*": ["app/constants/*"],
+      "@utils/*": ["app/utils/*"]
     },
     "target": "ES2022",
     "module": "ES2022",

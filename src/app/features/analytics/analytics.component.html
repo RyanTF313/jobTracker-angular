@@ -1,0 +1,35 @@
+@if (metrics$ | async; as metrics) {
+  <section id="analytics-section">
+    <div class="analytics-stats">
+      <div class="stat-card">
+        <span class="stat-value">{{ metrics.totalJobs | number }}</span>
+        <span class="stat-label">Total Applications</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value">{{ metrics.conversionRate }}%</span>
+        <span class="stat-label">Conversion Rate</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value">{{ metrics.rejectionRate }}%</span>
+        <span class="stat-label">Rejection Rate</span>
+      </div>
+    </div>
+    <div class="analytics-chart">
+      <h3 class="chart-title">Applications by Stage</h3>
+      <div class="bar-chart">
+        @for (column of columns; track column) {
+          <div class="bar-group">
+            <div class="bar-wrap">
+              <span class="bar-count">{{ metrics.counts[column] | number }}</span>
+              <div
+                class="bar bar--{{ column }}"
+                [style.height]="(metrics.counts[column] / metrics.maxCount) * 100 + '%'"
+              ></div>
+            </div>
+            <span class="bar-label">{{ columnLabels[column] }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+}
