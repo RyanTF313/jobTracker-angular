@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '@core/services/auth.service';
+import { StateService } from '@core/services/state.service';
 
 @Component({
   selector: 'app-welcomebar',
@@ -12,7 +13,10 @@ import { AuthService } from '@core/services/auth.service';
 export class WelcomebarComponent implements OnInit {
   currentUser = '';
 
-  constructor(private auth: AuthService) {}
+  constructor(
+    private auth: AuthService,
+    private state: StateService,
+  ) {}
 
   ngOnInit(): void {
     const user = this.auth.currentUser$.value;
@@ -23,5 +27,12 @@ export class WelcomebarComponent implements OnInit {
 
   onSubmit(): void {
     this.auth.logout();
+  }
+
+  onClearData(): void {
+    if (!confirm('This will permanently delete all your job data. Continue?')) {
+      return;
+    }
+    this.state.clearLocalStorage();
   }
 }

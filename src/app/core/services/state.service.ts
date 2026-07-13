@@ -85,6 +85,16 @@ export class StateService {
     this.setFilteredJobs();
   }
 
+  clearLocalStorage(): void {
+    if (!this.isBrowser) return;
+    localStorage.removeItem(STATE_KEY);
+    this.jobs$.next([]);
+    this.filteredJobs$.next([]);
+    this.useFilteredJobs$.next(false);
+    this.hasSearchFilter$.next(false);
+    this.displayedJobs$.next([]);
+  }
+
   getJobs(): Job[] {
     return this.jobs$.value?.filter((job: Job) => job.owner === this.auth.currentUser$.value);
   }
