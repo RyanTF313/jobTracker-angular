@@ -1,7 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { AsyncPipe, DecimalPipe } from '@angular/common';
-import { map } from 'rxjs';
+import { combineLatest, map } from 'rxjs';
 import { StateService } from '@core/services/state.service';
+import { AuthService } from '@core/services/auth.service';
 import { COLUMNS, COLUMN_LABELS } from '@constants/columns.constants';
 import { calculateMetrics } from '@utils/analytics.utils';
 
@@ -14,13 +15,14 @@ import { calculateMetrics } from '@utils/analytics.utils';
 })
 export class AnalyticsComponent {
   private state = inject(StateService);
+  private auth = inject(AuthService);
 
   columns = COLUMNS;
   columnLabels = COLUMN_LABELS;
 
-  metrics$ = this.state.jobs$.pipe(
-    map((jobs) => {
-      const metrics = calculateMetrics(jobs);
+  metrics$ = combineLatest([this.state.jobs$, this.auth.currentUser$]).pipe(
+    map(() => {
+      const metrics = calculateMetrics(this.state.getJobs());
       const maxCount = Math.max(...Object.values(metrics.counts), 1);
       return { ...metrics, maxCount };
     }),

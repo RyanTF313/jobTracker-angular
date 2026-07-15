@@ -23,7 +23,11 @@ export class AuthService {
     this.isLoggedIn$.next(true);
     this.currentUser$.next(username);
     if (this.isBrowser) {
-      sessionStorage.setItem(AUTH_KEY, JSON.stringify({ username }));
+      try {
+        sessionStorage.setItem(AUTH_KEY, JSON.stringify({ username }));
+      } catch {
+        // Ignore storage write failures.
+      }
     }
   }
 
@@ -38,12 +42,24 @@ export class AuthService {
 
   checkSession(): void {
     if (!this.isBrowser) return;
-    const saved = sessionStorage.getItem(AUTH_KEY);
-    if (saved) {
-      const { username } = JSON.parse(saved);
+    try {
+      const saved = sessionStorage.getItem(AUTH_KEY);
+      if (!saved) return;
+      const parsed: unknown = JSON.parse(saved);
+      if (
+        typeof parsed !== 'object' ||
+        parsed === null ||
+        typeof (parsed as { username?: unknown }).username !== 'string'
+      ) {
+        sessionStorage.removeItem(AUTH_KEY);
+        return;
+      }
+      const { username } = parsed as { username: string };
       this.isReturning = true;
       this.isLoggedIn$.next(true);
       this.currentUser$.next(username);
+    } catch {
+      sessionStorage.removeItem(AUTH_KEY);
     }
   }
 }

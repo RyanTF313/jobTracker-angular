@@ -33,6 +33,6 @@ export class WelcomebarComponent implements OnInit {
     if (!confirm('This will permanently delete all your job data. Continue?')) {
       return;
     }
-    this.state.clearLocalStorage();
+    this.state.clearCurrentUserJobs();
   }
 }
